@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6211" systemVersion="14A298i" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="BYZ-38-t0r" useTraitCollections="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7026.1"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="30" translatesAutoresizingMaskIntoConstraints="NO">
+                                <rect key="frame" x="0.0" y="556" width="600" height="44"/>
+                                <items>
+                                    <barButtonItem title="San Francisco" id="55" translatesAutoresizingMaskIntoConstraints="NO">
+                                        <connections>
+                                            <action selector="btnSanFran_Activated:" destination="BYZ-38-t0r" id="59"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem title="Boston" id="56" translatesAutoresizingMaskIntoConstraints="NO">
+                                        <connections>
+                                            <action selector="btnBoston_Activated:" destination="BYZ-38-t0r" id="60"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem id="57" translatesAutoresizingMaskIntoConstraints="NO" title="London">
+                                        <connections>
+                                            <action selector="btnLondon_Activated:" destination="BYZ-38-t0r" id="61"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem id="58" translatesAutoresizingMaskIntoConstraints="NO" title="Singapore">
+                                        <connections>
+                                            <action selector="btnSingapore_Activated:" destination="BYZ-38-t0r" id="62"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" id="41" translatesAutoresizingMaskIntoConstraints="NO">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="556"/>
+                            </mapView>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="30" firstAttribute="trailing" secondItem="8bC-Xf-vdC" secondAttribute="trailing" constant="0.0" id="34"/>
+                            <constraint firstItem="30" firstAttribute="bottom" secondItem="8bC-Xf-vdC" secondAttribute="bottom" constant="0.0" id="35"/>
+                            <constraint firstItem="30" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="0.0" id="36"/>
+                            <constraint id="70" constant="0.0" firstItem="8bC-Xf-vdC" firstAttribute="trailing" secondItem="41" secondAttribute="trailing"/>
+                            <constraint id="71" constant="0.0" firstItem="41" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top"/>
+                            <constraint firstItem="41" firstAttribute="bottom" secondItem="30" secondAttribute="top" constant="0.0" id="75"/>
+                            <constraint firstItem="41" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="0.0" id="76"/>
+                        </constraints>
+                    </view>
+                    <toolbarItems/>
+                    <connections>
+                        <outlet property="map" destination="41" id="name-outlet-41"/>
+                        <outlet property="btnSanFran" destination="55" id="name-outlet-55"/>
+                        <outlet property="btnBoston" destination="56" id="name-outlet-56"/>
+                        <outlet property="btnLondon" destination="57" id="name-outlet-57"/>
+                        <outlet property="btnSingapore" destination="58" id="name-outlet-58"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="0.0" y="0.0"/>
+        </scene>
+    </scenes>
+</document>
