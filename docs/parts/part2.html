@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+    <title>Exercise 2: Show the device's current location</title>
+    <link rel="stylesheet" type="text/css" href="./res/styles/normalize.css">
+    <link rel="stylesheet" type="text/css" href="./res/styles/prettify.css" />
+    <link rel="stylesheet" type="text/css" href="./res/styles/styles.css">
+</head>
+
+<body>
+    <!-- Use the same title as the StartHere -->
+    <header>Introduction to Maps</header>
+
+    <section id="main">
+      <h1 id="page-title"></h1>
+
+      <h2>Duration</h2>
+      <p>15 minutes</p>
+
+      <h2>Goals</h2>
+      <p>
+        In this exercise, you will continue working on the application in the 1st exercise and add support to determine the user location and prompt the user to launch the privacy settings when the CoreLocation API is not allowed. When you are finished, the application will look something like:
+
+        <img src="res/images/lab2-finished.png"/>
+      </p>
+
+      <h2>Required Assets</h2>
+      <p>
+        There is a <b>Exercise 2</b> folder included with this lab exercise which contains a completed project if you'd like to compare your work.
+      </p>
+
+      <h2>Challenge</h2>
+      <p>
+        You will be continuing on with your code from the first lab, if you did not finish that lab, you can use the <b>Completed</b> project in the <b>Exercise 1</b> folder in the lab materials.
+      </p>      
+      <p> 
+        The high-level procedure is shown here. You can use this information to guide your implementation or use the step-by-step procedure given below.
+      </p>
+      <ol>
+        <li>
+          You will need to request access to Location Services using the <code>CLLocationManager.RequestWhenInUseAuthorization</code> method.
+        </li>
+        <li>
+          Next, edit the <strong>info.plist</strong> to add <strong>NSLocationWhenInUseUsageDescription</strong> to the list and a description of why you want to use location services.
+        </li>
+        <li>
+          Enable the <code>ShowUserLocation</code> property on your <code>MKMapView</code> to show the device's current location on the map.
+        </li>
+        <li>
+          Turn off location services for the app and then add the code to prompt the user and pass them to the <b>Settings</b> when Location Services are not enabled.
+        </li>
+      </ol>
+
+      <h1>Steps</h1>
+      <h2>Request Location Services</h2>
+      <p>
+        We need to request location services permissions before we can use the user's current location.
+      </p>
+      <ol>
+        <li>
+          First, in the <b>ViewController.cs</b> class, create an instance of the <code>CLLocationManager</code> and store it in a class-level field. The lab will name the field <b>locMan</b>. 
+          <ul class="indent-none">
+            <li>
+              You will need to add <code>using</code> definitions for the <code>Foundation</code> and <code>CoreLocation</code> namespaces.
+            </li>
+            <li>
+              We store this as a class-level field so the GC doesn't collect it; since the authorization prompt done by iOS is dependent on the <code>CLLocationManager</code> instance, it must stay alive during the entire sequence; and that sequence is asynchronous to the UI itself (e.g. it's a prompt displayed <em>above</em> the application and independent of our app code). Therefore, we need to keep the instance around until the prompt is dismissed at some future time - the easiest way to manage that is to keep a reference to it in our <b>ViewController</b> class.
+            </li>
+          </ul>
+        </li>
+
+        <li>
+          Next, in the <code>ViewDidLoad</code> method, use the <code>RequestWhenInUseAuthorization</code> method on your <b>locMan</b> instance to request location service permissions.        
+        </li>
+      </ol>
+
+<p><a href="#" onclick="toggleCode(this,'firstMarker');return false;" class="uiitem">Show Code</a>
+<div class="indent-medium" id="firstMarker" style="display:none;">
+<pre class="prettyprint">
+CLLocationManager locMan = new CLLocationManager();
+
+public override void ViewDidLoad ()
+{
+    base.ViewDidLoad ();
+
+    locMan.RequestWhenInUseAuthorization();
+    ...
+};
+</pre></div></p>
+
+      <h2>Add a Location permission description to <b>info.plist</b></h2>
+      <p>
+          <b>Using Visual Studio for Mac:</b>
+          <ol>
+              Next, open the <strong>info.plist</strong> file and add a new entry for &quot;<strong>NSLocationWhenInUseUsageDescription</strong>&quot; to include a description telling the user why using their location will be beneficial.
+              <ul class="indent-none">
+                <li>You will need to switch to the <b>Source</b> view to add this entry.</li>
+                <li>You should get Intellisense for the key name.</li>
+                <li>Set the text to something like: "This app uses your location to improve search results".</li>
+              </ul>
+          </ol>
+          <img src="res/images/infoPlist.png" />
+        </p>
+       
+        <p>
+          <b>Using Visual Studio on Windows:</b>
+            <ol>
+              Next, we will add a &quot;<strong>NSLocationWhenInUseUsageDescription</strong>&quot; to the <strong>info.plist</strong> file to include a description telling the user why using their location will be beneficial.
+              <ul class="indent-none">
+                <li>To edit the XML directly, right-click on <strong>info.plist</strong> and choose <b>Open With...</b>.</li>
+                <li>Select <b>XML (Text) Editor</b> from the Open With program list. This will provide XML syntax highlighting and some code-completion assistance.</li>
+                <li>Right before the closing tag of the <b>dict</b> element, add a new <b>key</b> element.</li>
+                <li>Set the text of the <b>key</b> element to "NSLocationWhenInUseUsageDescription".</li>
+                <li>Immediately after the new <b>key</b> element, add a <b>string</b> element.</li>
+                <li>Set the text to something like: "This app uses your location to improve search results".</li>
+              </ul>
+            </ol>
+
+            <p><a href="#" onclick="toggleCode(this,'vsPlistMarker');return false;" class="uiitem">Show Code</a>
+            <div class="indent-medium" id="vsPlistMarker" style="display:none;">
+<pre class="prettyprint">
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"&gt;
+&lt;plist version="1.0"&gt;
+   &lt;dict&gt;
+      ...
+      <span class="highlight">&lt;key&gt;NSLocationWhenInUseUsageDescription&lt;/key&gt;</span>
+      <span class="highlight">&lt;string&gt;This app uses location to improve search results!&lt;/string&gt;</span>
+   &lt;/dict&gt;
+&lt;/plist&gt;</pre>
+            </div></p>
+          </ol>
+        </li>
+      </ul>
+
+      <h2>Add support to show the device's location on the map</h2>
+      <ol>
+        <li>
+          Check the <b>User Location</b> property under the <b>Shows</b> section in the map properties on the storyboard. 
+        </li>
+
+        <img src="res/images/showLocation.png" />
+
+        <li>
+          Alternatively, in the <b>ViewController</b> code, you can set the <code>ShowsUserLocation</code> property to <strong>true</strong> on the <code>MKMapView</code>. This is exactly what the designer setting is doing.
+        </li>
+
+        <li>
+          Now, run the application - you should get a prompt as soon as the app launches which will include your description text you added into the <b>info.plist</b>. If you allow the location usage, the map will draw your current location with a little marker. (Note: in the simulator the current location can be set wherever you like through the <b>Debug > Location</b> menu).
+        </li>
+      </ol>
+
+      <h2>Launch location settings from within the application</h2>
+      <p>
+        Now, let's see what happens if the user denies location services. We need to consider how the application should react if that happens.
+      </p>
+      <ol>
+        <li>
+          As a first step, open the device or simulator, open the Settings.app, and navigate to <b>Private > Location</b>. Your app should be listed here and indicate that it can use Location Services "While Using".
+        </li>
+    
+        <img src="./res/images/lab2-privacy.png" Width="320" />
+
+        <li>
+          Tap the "Mapping" entry and change the setting to "Never" to disallow location services.
+        </li>
+
+        <li>
+          Run the app. What happens?
+        </li>
+
+        <li>
+          Let's try to gracefully respond to the problem. Add an override for the <code>ViewDidAppear</code> method to your <b>ViewController</b>. We want the app to be visible before we prompt the user, and this is a good spot to do that.
+        </li>
+
+        <li>
+          Check to see if we were granted location permissions using the static <code>CLLocationManager.Status</code> property. This returns an enumeration indicating our allowed privileges. If we are not allowed to use Location Services, then we will need to prompt the user and possibly jump to the settings app.
+        </li>
+
+        <li>
+          You can request to open the Settings app by using the static method <code>UIApplication.SharedApplication.OpenUrl</code> with the special URL defined by the static property <code>UIApplication.OpenSettingsUrlString</code>. In older versions of iOS, there's no built-in support for this, but we can still prompt the user.
+        </li>
+
+        <li>
+          Use the <code>UIAlertController</code> API to display an alert to the user. 
+          <ul class="indent-none">
+            <li>Set the title to "Unable to determine location".</li>
+            <li>Set the message to "This application works best when it can determine your current position. Would you like to go to Settings to enable location data?"</li>
+            <li>Add both a YES and NO button.</li>
+            <li>If YES is clicked, open the settings app.</li>
+          </ul>
+          You can use the following example as a guide for creating the <code>UIAlertController</code>.
+        </li>
+
+<pre class="codeblock prettyprint">
+var alertController = UIAlertController.Create(
+          "Title Goes Here", 
+          "Message Goes Here", 
+          UIAlertControllerStyle.Alert);
+
+// Add YES and NO buttons
+alertController.AddAction(UIAlertAction.Create(
+    "Yes", UIAlertActionStyle.Default,
+    alert => {
+       /* Code to execute when YES is clicked */
+    }));
+
+alertController.AddAction(UIAlertAction.Create(
+    "No", UIAlertActionStyle.Cancel, null));
+
+// Show the alert    
+this.PresentViewController(alertController, true, null);
+</pre>
+    </ol>
+
+<p><a href="#" onclick="toggleBlock(this,'showAlert', 'Show Full Code', 'Hide Code');return false;" class="uiitem">Show Full Code</a>
+<div class="indent-medium" id="showAlert" style="display:none;">
+<pre class="prettyprint">
+public override void ViewDidAppear(bool animated)
+{
+    base.ViewDidAppear(animated);
+
+    if (CLLocationManager.Status == CLAuthorizationStatus.Denied)
+    {
+        var yesNoAlertController = UIAlertController.Create(
+            "Unable to determine location", 
+            "This application works best when it can determine your current " +
+            "position.  Would you like to go to Settings to enable location data?", 
+            UIAlertControllerStyle.Alert);
+
+        yesNoAlertController.AddAction(UIAlertAction.Create(
+            "Yes", UIAlertActionStyle.Default,
+            alert => {
+                var settingsString = UIApplication.OpenSettingsUrlString;
+                var url = new NSUrl(settingsString);
+                UIApplication.SharedApplication.OpenUrl(url);
+            }));
+
+        yesNoAlertController.AddAction(UIAlertAction.Create(
+            "No", UIAlertActionStyle.Cancel, null));
+        this.PresentViewController(yesNoAlertController, true, null);
+        
+     }
+}
+</pre></div></p>
+
+      <ol start="9">
+        <li>
+          Make sure Location Services are not allowed for your app and then re-run your application. You might need to kill the running app by double-tapping the Home button. On the iOS Simulator, you can use the SHIFT+&#8984;+H accelerator key to simulate the Home button press, just type this twice in quick succession to see the app switcher UI, and then drag your app up to kill it.
+        </li>
+
+        <li>
+          You should now be prompted to turn on Location Services; it should switch to the settings app automatically when you say "YES". Try turning on Location Services and returning to your app (while it's still running).
+        </li>
+
+        <li>
+          Try turning permissions on and off and seeing how your app responds.
+        </li>
+      </ol>
+
+      <!-- - - - - - - - - Summary - - - - - - - - -->
+      <h1>Summary</h1>
+      <p> 
+        Congratulations! In this lab exercise, you added support to your application to show the device's current location on the map and, when permissions were not available, created an alert to provide a description of why the application needs to show location and launched the settings directly from your application.
+      </p>
+      <div class="align-right"> <a href="../Start%20Here.html">Go Back</a> </div>
+    </section>
+
+    <script src="./res/js/jquery.min.js"></script>
+    <script src="./res/js/prettify.js"></script>
+    <script src="./res/js/script.js"></script>    
+    <footer>Copyright (C) 2018 Xamarin Inc., Microsoft.</footer>
+  </body>
+</html>

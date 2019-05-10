@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+    <title>Exercise 4: Add an annotation to your map</title>
+    <link rel="stylesheet" type="text/css" href="./res/styles/normalize.css">
+    <link rel="stylesheet" type="text/css" href="./res/styles/prettify.css" />
+    <link rel="stylesheet" type="text/css" href="./res/styles/styles.css">
+</head>
+
+<body>
+    <!-- Use the same title as the StartHere -->
+    <header>Introduction to Maps</header>
+
+    <section id="main">
+      <h1 id="page-title"></h1>
+
+      <h2>Duration</h2>
+      <p>10 minutes</p>
+
+      <h2>Goals</h2>
+      <p> 
+        In this exercise, you will add annotations to a map to display the location of Xamarin offices around the world are using <code>MKPointAnnotation.</code>
+      </p>
+
+      <h2>Required Assets</h2>
+      <p> 
+        There is a <b>Exercise 4</b> folder included with this lab exercise which contains a starter project. There is also a completed version if you'd like to compare your work. 
+      </p>
+      
+      <h2>Exercise Challenge</h2>
+      <p> 
+        The high-level procedure is shown here. You can use this information to guide your implementation or use the step-by-step procedure given below.
+      </p>
+      
+      <ol>
+        <li>
+          Add a set of pin annotations for four locations (defined in the starter project) when the <b>Add</b> button is tapped.
+        </li>
+        <li>
+          Remove the annotations from the map when the <b>Remove</b> button is tapped.
+        </li>
+        <li>
+          Toggle the enabled/disabled state of the <b>Add</b> and <b>Remove</b> buttons as you add and remove annotations.
+        </li>
+      </ol>
+
+      <h1>Steps</h1>
+      
+      <h2>Adding annotations to a map</h2>
+      <p>
+        In this part of the exercise we will create MKPointAnnotations that include location descriptions of Xamarin offices located in SanFrancisco, Boston, London and Singapore; we will then and add them to our map.
+      </p>
+      <ol>
+        <li>
+          Open the <b>Mapping.sln</b> solution in <b>Exercise 4</b>. Make sure to use this version as there are some UI and code differences..
+        </li>
+
+        <li>
+          In the <b>ViewController.cs</b> source file, create a method named &quot;<strong>AddAnnotation</strong>&quot; which takes the following parameters:
+          <ul>
+            <li><code>CLLocationCoordinate2D</code> coordinate</li>
+            <li><code>string</code> title</li>
+            <li><code>string</code> subtitle</li>
+          </ul>
+        </li>
+
+        <li>
+          Next, using the passed parameters, create a new <code>MKPointAnnotation</code> and add it to your map instance with the <code>AddAnnotation</code> method.
+        </li>
+      </ol>
+
+<p><a href="#" onclick="toggleCode(this,'initialPos');return false;" class="uiitem">Show Code</a>
+<div class="indent-medium" id="initialPos" style="display:none;">
+<pre class="prettyprint">
+void AddAnnotation (CLLocationCoordinate2D coord, string title, string subtitle)
+{
+   var annotation = new MKPointAnnotation {
+      Title = title,
+      Subtitle = subtitle,
+      Coordinate = coord,
+   };
+
+   map.AddAnnotation (annotation);
+}
+</pre></div></p>
+
+      <h2>Create the annotations</h2>
+      <ol>
+        <li>
+          Next, in the <code>btnPoints_Activated</code> event handler call your new <code>AddAnnotation</code> method for each of the locations identified by the coordinates at the top of the <b>ViewController.cs</b> source file.
+          <ul class="indent-none">
+            <li>San Francisco</li>
+            <li>Boston</li>
+            <li>London</li>
+            <li>Singapore</li>
+          </ul>
+          You can select any title and subtitle you like.
+        </li>
+
+        <li>
+          Make sure you only add the annotations once - disable the <code>btnAddPoints</code> button once this method is called. Also, once annotations have been added, enable the <code>btnRemovePoints</code> button.
+        </li>
+
+        <li>
+          Run the application and tap the "Add Points" button - the map should display some red pins in various places around the world. Click on each of the annotations to see your title and subtitle on the call out.
+        </li>
+        
+        <li>
+          For more of a challenge, try using a counter and adding the four annotations one-at-a-time as you tap the Add button.
+        </li>
+      </ol>
+
+<p><a href="#" onclick="toggleCode(this,'add');return false;" class="uiitem">Show Code</a>
+<div class="indent-medium" id="add" style="display:none;">
+<pre class="prettyprint">
+partial void btnPoints_Activated (UIBarButtonItem sender)
+{
+      AddAnnotation(locSanFran, "San Fransisco", "Fog and Xamarin HQ");
+      AddAnnotation(locBoston, "Boston", "Get a donut and coffee here");
+      AddAnnotation(locLondon, "London", "Big Ben isn't a clock");
+      AddAnnotation(locSingapore, "Singapore", "Mostly islands");
+
+      btnAddPoints.Enabled = false;
+      btnRemovePoints.Enabled = true;
+}
+</pre></div></p>
+
+      <h2>Clear the annotations from the map</h2>
+      <ol>
+        <li>
+          Lastly, in the <strong>btnRemove_Activated</strong> event handler remove the annotations from the map - you can get the current list from the <code>Annotations</code> property and either individually remove them, or do them as a group.
+        </li>
+        <li>
+          Make sure to enable and disable the buttons based on the new state.
+        </li>
+        <li>
+          Run the application a final time and try adding and removing annotations.
+        </li>
+
+       <li>
+        For more of a challenge, try using a counter and adding and removing the four annotations one-at-a-time as you tap the Add and Remove buttons.
+        </li>
+      </ol>
+
+<p><a href="#" onclick="toggleCode(this,'remove');return false;" class="uiitem">Show Code</a>
+<div class="indent-medium" id="remove" style="display:none;">
+<pre class="prettyprint">
+partial void btnRemove_Activated (UIBarButtonItem sender)
+{
+    map.RemoveAnnotations(map.Annotations);
+
+    btnAddPoints.Enabled = true;
+    btnRemovePoints.Enabled = false;
+}
+</pre></div></p>      
+     
+      <!-- - - - - - - - - Summary - - - - - - - - -->
+      <h1>Summary</h1>
+      <p> 
+        Congratulations! In this lab exercise, you have created pin annotations with call outs to display on your map.
+      </p>
+      <div class="align-right"> <a href="../Start%20Here.html">Go Back</a> </div>
+    </section>
+
+    <script src="./res/js/jquery.min.js"></script>
+    <script src="./res/js/prettify.js"></script>
+    <script src="./res/js/script.js"></script>    
+
+    <footer>Copyright (C) 2018 Xamarin Inc., Microsoft.</footer>
+  </body>
+</html>

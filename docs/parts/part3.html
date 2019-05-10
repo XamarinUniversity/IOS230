@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+    <title>Exercise 3: Changing the map's viewport with the camera</title>
+    <link rel="stylesheet" type="text/css" href="./res/styles/normalize.css">
+    <link rel="stylesheet" type="text/css" href="./res/styles/prettify.css" />
+    <link rel="stylesheet" type="text/css" href="./res/styles/styles.css">
+</head>
+
+<body>
+    <!-- Use the same title as the StartHere -->
+    <header>Introduction to Maps</header>
+
+    <section id="main">
+      <h1 id="page-title"></h1>
+      
+      <h2>Duration</h2>
+      <p>10 minutes</p>
+      
+      <h2>Goals</h2>
+      <p> 
+        In this exercise, you will work with  <code>MKMapCamera</code> to use buttons to change the camera's view for different areas on the map.
+      </p>
+      
+      <h2>Required Assets</h2>
+      <p> 
+        There is a <b>Exercise 3</b> folder included with this lab exercise which contains a starter project for you to work with. There is also a completed project if you'd like to compare your work. 
+      </p>
+      
+      <h2>Exercise Challenge</h2>
+      <p> 
+        The high-level procedure is shown here. You can use this information to guide your implementation or use the step-by-step procedure given below.
+      </p>
+      <ol>
+        <li>
+          You will start with an updated UI in the <b>Mapping.sln</b> solution in <b>Exercise 3</b>.
+        </li>
+
+        <li>
+          Implement each of the buttons to move the camera to the designated cities:
+          <ul class="indent-none">
+            <li><b>San Francisco:</b> (37.7833, -122.4167)</li>
+            <li><b>Boston:</b> (42.3601, -71.0589)</li>
+            <li><b>London:</b> (51.5072, -0.1275)</li>
+            <li><b>Singapore:</b> (1.3, 103.8)</li>
+          </ul>
+        </li>
+
+        <li>
+          You will try various altitudes and pitches for the cities.
+        </li>
+
+        <li>
+          Finally, you will use both the default camera as well as animating the camera using the <code>SetCamera</code> API on the <code>MKMapView</code>.
+        </li>
+      </ol>
+
+      <h1>Steps</h1>
+      
+      <h2>Setting up the coordinates</h2>
+      <p>
+        Let's get started by adding location coordinates
+      </p>
+      
+      <ol>
+        <li>
+          Open the <b>Mapping.sln</b> file in <b>Exercise 3</b>. You will notice a similar UI to the previous exercises, however the Button names and titles have been changed.
+        </li>
+        <li> 
+          First we need to provide coordinates for each of the locations we want to move to. Add the following location values into your <b>ViewController</b> class as class-level fields. The <code>CLLocationCoordinate2D</code> comes out of the <code>CoreLocation</code> namespace and represents a single 2D coordinate with a longitude and latitude value.
+        </li>
+<pre class="prettyprint codeblock">
+CLLocationCoordinate2D locSanFran = new CLLocationCoordinate2D(37.7833, -122.4167);
+CLLocationCoordinate2D locBoston = new CLLocationCoordinate2D(42.3601, -71.0589);
+CLLocationCoordinate2D locLondon = new CLLocationCoordinate2D(51.5072, -0.1275);
+CLLocationCoordinate2D locSingapore = new CLLocationCoordinate2D(1.3, 103.8);
+</pre>
+        </ol>
+
+      <h2>Change the Map's view with the default camera</h2>
+      <p>
+        In this part of the lab we will program the default camera to view a location (San Francisco). We will use the <code>Altitude</code> property to identify how much of the map area will show.
+      </p> 
+        
+      <ol>
+        <li>
+          Locate the <code>btnSanFran_Activated</code> method in your <b>ViewController</b>. (If this method does not exist, make sure you are using the correct starter project from <b>Exercise 3</b>!)
+        </li>
+
+        <li>
+          Adjust the map's default camera (accessible through the <code>Camera</code> property) to have a <code>CenterCoordinate</code> of <b>locSanFran</b> and an <code>Altitude</code> of 5000. 
+        </li>
+
+        <li>
+          Run the application and press the first button (San Francisco) to reposition the map.
+        </li>
+      </ol>
+
+<p><a href="#" onclick="toggleCode(this,'sanFran');return false;" class="uiitem">Show Code</a>
+<div class="indent-medium" id="sanFran" style="display:none;">
+<pre class="prettyprint">
+partial void btnSanFran_Activated (UIBarButtonItem sender)
+{
+    map.Camera.CenterCoordinate = locSanFran;
+    map.Camera.Altitude = 5000;
+}
+</pre></div></p>
+
+      <h2>Change the pitch of the camera</h2> 
+      <p>
+        In this part, we will assign the default <code>Camera</code> properties to set the pitch for the camera to present a 3D view.
+      </p>
+      <ol> 
+        <li>
+          Locate the <code>btnBoston_Activated</code> method.
+        </li>
+
+        <li>
+          As a first step, set the map's <code>MapType</code> to <code>MKMapType.Standard</code>. It likely is already set that way, but this will make sure.
+        </li>
+
+        <li>
+          Next, set the default Camera properties to be:
+          <ul class="indent-none">
+            <li><b>CenterCoordinate</b>: locBoston</li>
+            <li><b>Altitude</b>: 1000</li>
+            <li><b>Pitch</b>: 45</li>
+          </ul>
+        </li>
+
+        <li>
+          Lastly, Make sure the <code>ShowsBuildings</code> and <code>PitchEnabled</code> properties are both set to <code>true</code> on the <code>MKMapView</code> instance.
+        </li>
+
+        <li>
+          Run the application and tap on the Boston button. The map should move and display a 3D-like image; on a simulator, it will look like it's tilted and on a device it will show actual buildings.
+        </li>
+
+        <img src="./res/images/lab3-3D.png" />
+      </ol>
+
+<p><a href="#" onclick="toggleCode(this,'boston');return false;" class="uiitem">Show Code</a>
+<div class="indent-medium" id="boston" style="display:none;">
+<pre class="prettyprint">
+partial void btnBoston_Activated (UIBarButtonItem sender)
+{
+    map.MapType = MKMapType.Standard;
+
+    map.Camera.CenterCoordinate = locBoston;
+    map.Camera.Altitude = 500;
+    map.Camera.Pitch = 45;
+
+    map.ShowsBuildings = true;
+    map.PitchEnabled = true;
+}
+
+</pre></div></p>
+        
+      <h2>Create new MKMapCamera objects and animate the camera changes</h2>
+      <p>
+        In this section we will create new <code>MKMapCamera</code> objects for the London and Singapore buttons. We will use different values in the properties for each of them and then animate the transition between them.
+      </p>
+      <ol> 
+        <li>
+          Locate the <code>btnLondon_Activated</code> method.
+        </li>
+        <li>
+          Create a new <code>MKMapCamera</code> instance and set the following properties on it:
+          <ul class="indent-none">
+            <li>Set the location to <b>locLondon</b>.</li>
+            <li>Use "10000" for the <strong>Altitude</strong>.</li>
+            <li>Use "45" for the <strong>Pitch</strong>.</li>
+            <li>Use "180" for the <strong>Heading</strong>.</li>
+          </ul>
+        </li>
+
+        <li>
+          Assign the <code>Camera</code> property on your map to the new <code>MKMapCamera</code> instance.
+        </li>
+      </ol>
+
+<p><a href="#" onclick="toggleCode(this,'london');return false;" class="uiitem">Show Code</a>
+<div class="indent-medium" id="london" style="display:none;">
+<pre class="prettyprint">
+partial void btnLondon_Activated (UIBarButtonItem sender)
+{
+    map.Camera = new MKMapCamera {
+        CenterCoordinate = locLondon,
+        Altitude = 10000,
+        Pitch = 45,
+        Heading = 180,
+    };
+}
+</pre></div></p>
+
+      <ol start="4">
+         <li>
+          Repeat the previous steps for the Singapore button using <b>locSingapore</b> as the <code>CenterCoordinate</code>.
+          </li>
+          <li>
+            Instead of assigning the <code>Camera</code> property, use the map's <code>SetCamera</code> method and pass <code>true</code> for the animation parameter.
+          </li>
+        <li>
+          Run the application and see how the camera changes the view for each location; when the camera property is set directly, it just "jumps" to that location; but the method allows for a smoother animation approach.
+        </li>
+      </ol>
+
+<p><a href="#" onclick="toggleCode(this,'singapore');return false;" class="uiitem">Show Code</a>
+<div class="indent-medium" id="singapore" style="display:none;">
+<pre class="prettyprint">
+partial void btnSingapore_Activated (UIBarButtonItem sender)
+{
+    var camera = new MKMapCamera {
+        CenterCoordinate = locSingapore,
+        Altitude = 10000,
+        Pitch = 45,
+        Heading = 180
+    };
+
+    map.SetCamera(camera, true);
+}
+</pre></div></p>
+
+      <!-- - - - - - - - - Summary - - - - - - - - -->
+      <h1>Summary</h1>
+      <p> 
+        Congratulations! In this lab exercise, you experimented with and compared the different ways you can manipulate the map's camera using altitude and region with the default camera and then by making your own camera objects.
+      </p>
+      <div class="align-right"> <a href="../Start%20Here.html">Go Back</a> </div>
+    </section>
+
+
+    <script src="./res/js/jquery.min.js"></script>
+    <script src="./res/js/prettify.js"></script>
+    <script src="./res/js/script.js"></script>        
+    <footer>Copyright (C) 2018 Xamarin Inc., Microsoft.</footer>
+  </body>
+</html>
