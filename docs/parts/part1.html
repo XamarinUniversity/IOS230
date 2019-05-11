@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+    <title>Exercise 1: Explore iOS mapping options</title>
+    <link rel="stylesheet" type="text/css" href="./res/styles/normalize.css">
+    <link rel="stylesheet" type="text/css" href="./res/styles/prettify.css" />
+    <link rel="stylesheet" type="text/css" href="./res/styles/styles.css">
+</head>
+
+<body>
+    <!-- Use the same title as the StartHere -->
+    <header>Introduction to Maps</header>
+
+    <section id="main">
+      <h1 id="page-title"></h1>
+
+      <h2>Duration</h2>
+      <p>10 minutes</p>
+
+      <h2>Goals</h2>
+      <p>
+        In this group exercise, we will explore adding a map to a new iOS application. 
+        We will create a UI that includes a map and three buttons that will change the <code>MapType</code> dynamically. 
+        The completed lab will look something like:
+
+        <img src="res/images/lab1-finished.png" />        
+      </p>
+      
+      <h2>Required Assets</h2>
+      <p> 
+        There is a <b>Exercise 1</b> folder included with this lab
+        exercise which contains a completed project if you'd like to compare
+        your work. 
+      </p>
+      
+      <h2>Challenge</h2>
+      <p> 
+        The high-level procedure is shown here. You can use this information to guide your implementation or use the step-by-step procedure given below.
+      </p>
+      
+      <ol>
+        <li>Create a new Single-View, Universal (iPhone+iPad) iOS solution.</li>
+        <li>Add a <code>UIToolbar</code> to the bottom of the view with three buttons as shown in the image above.</li>
+        <li>Add a <code>MKMapView</code> stretched over the remainder of the view.</li>
+        <li>Wire up event handlers for each button and change the <code>MapType</code> for the mapView.</li>
+        <li>Turn on the map options to be able to interact with the map.</li>
+      </ol>
+     
+      <h1>Steps</h1>
+      <h2>Create a new Solution and add a UIToolbar</h2>
+      <ol>  
+        <li>
+          Using your IDE of choice, create a new Single-View, Universal iOS application that can run on both the iPhone and iPad.
+        </li>
+        <li>
+          Open the <strong>Main.Storyboard file</strong>. Our goal is to create the following design:
+        </li>
+
+        <img src="./res/images/lab1-designer-completed.png" class="indent-none" />
+
+        <li>
+          In the designer, drag a <strong>Toolbar</strong> from the Toolbox to the bottom of the screen; size it to stretch along the bottom of the view contoller.
+        </li>
+
+        <img src="res/images/Toolbar.png" class="indent-none"/>        
+
+        <li>
+          Using the above image as a guide, add Constraints to the toolbar to dock it to the bottom of the screen. 
+          The Toolbar has an intrinsic height so you will only need to fix it's position by constraining the left, right and bottom of it to the 
+          corresponding edges of the view controller.
+        </li>
+      </ol>
+
+<p>
+<a href="#" onclick="toggleBlock(this, 'addingConstraints', 'How do I add a constraint in the iOS Designer?', 'Hide'); return false;" class="uiitem">How do I add a constraint in the iOS Designer?</a>
+<div class="wsblock" id="addingConstraints" style="display:none;">
+<div class="wsitem">
+<b>How do I add a constraint in the iOS Designer?</b>
+<p>
+  The designer supports two different "modes": <b>Selection</b> and <b>Constraints</b>. In selection mode, you will see round circles draw on the edges of selected controls - these can be dragged to resize the specific control they are drawn on top of. Single-clicking on the control will change you into constraints editing mode.
+</p>
+<p>
+  In constraints mode, you will see a set of "T"-handles drawn on the four corners, and "I" bars on the right and bottom edges. You add alignment constraints by dragging the "T" handle from the edge of the control to another control (or screen) edge.
+</p>
+<img src="./res/images/lab1-constraints.png" />
+<p>
+  As you are dragging the "T" handle, when you are on a valid spot, a light Blue line will be drawn to show where the constraint will be added. Release the handle on the edge to add the constraint. 
+</p>
+<p>
+  To add the constraints to the Toolbar, position and size the toolbar at the bottom of the screen and stretch it out across the entire width of the screen in selection mode. Then click on the control to switch to constraint editing mode and use the "T" bar handles on the left and right sides to add a constraint from the left side of the bar to the left side of the View, and the same for the right side. On the bottom, use the bottom "T" bar to set a constraint between the bottom of the bar and the bottom of the view.
+</p>
+<p>
+You can look at the <b>Layout</b> section in the properties for the Toolbar (make sure it's selected in the designer) to see all the constraints and fine-tune any values (or delete them if they aren't what you want).
+</p>
+<img src="./res/images/lab1-layoutprops.png" />
+<p>
+  Once you've added all three required constraints (check your layout properties), the Toolbar might be colored in Orange. This indicates that the current designer-position (that you are looking at) isn't where the Toolbar will be when the app is running. To fix this, press the "Update Frames" button in the designer toolbar.
+</p>
+<img src="./res/images/lab1-updateframe.png"/>
+<p>
+The control should then change to the normal "blue" selected color.
+</p>
+</div></div></p>
+
+      <div class="hintblock">
+      <b>Note:</b> if you've not worked much with Auto Layout in the designer, it can be a bit frustrating at first. If you are doing this exercise on your own you can copy the <b>Main.storyboard</b> from the <b>Completed</b> project in <b>Exercise 1</b> if you'd like to skip the layout design steps.
+      </div>
+
+
+      <h2>Add the map to your view</h2>
+      <p>
+        Next, let's add the map into the application.
+      </p>
+      <ol>
+        <li>
+          In the <strong>Main.Storyboard</strong>, use the ToolBox, locate the Map View, and drag it onto your view controller.
+        </li>
+        <li>
+          Resize the Map to fill the remaining space in the view controller (above the toolbar);
+        </li>
+
+        <img src="res/images/map.png" class="indent-none" />
+
+        <li>
+          Apply constraints bewtween the top, left, right and bottom edges of the map and the parent view controller.
+        </li>
+        <li>
+          Select your map and name it "map" in the properties pane.
+        </li>
+        <img src="res/images/nameMap.png" class="indent-none" />
+      </ol>      
+
+      <h2>Add Buttons to the Toolbar</h2>
+      <p>
+        We will use Toolbar buttons to change the type of map we are displaying. In this step, we will add those buttons into the UI.
+      </p>
+      <ol>
+          <li>
+            In the Toolbox, locate the <strong>Bar Button Item</strong> and drag two additional buttons onto the Toolbar.
+          </li>
+          <li>
+            Click on each button to edit the <b>Name</b> and <b>Title</b> in the Properties pane. 
+            <ul class="indent-none">
+              <li>
+                Give each button a title that describes the three primary map types: Standard, Satellite and Hybrid.
+              </li>
+              <li>
+                Name the buttons: btnStandard, btnSatellite, btnHybrid respectively.
+              </li>
+            </ul>
+          </li>
+          <img src="res/images/ToolbarButtons.png" class="indent-none" />
+      </ol>
+
+      <h2>Create event handlers for the buttons</h2>
+      <p>
+        We need to add event handlers for each of the buttons in our Toolbar.
+      </p>
+      <ol> 
+        <li>
+          In the designer, double-click on each of the buttons in the Toolbar. 
+          This will automatically create the method in the <strong>ViewController.cs</strong> file. 
+          Move the yellow event handler box where you want it and press enter to place it in the code. 
+          Alternatively, using the names you assigned to the buttons, subscribe to each of the button's <code>Clicked</code> EventHandlers programmatically.
+        </li>
+        
+        <img src="res/images/Event.png" Width="500" class="indent-none" />
+
+        <li>
+          Once all three methods have been created, set the map type (standard, satellite, hybrid) for each of the buttons, use the code hint below as an example if you need a little guidance.
+        </li>
+        
+<p><a href="#" onclick="toggleCode(this,'getMapFragment');return false;" class="uiitem">Show Code</a>
+<div class="indent-medium" id="getMapFragment" style="display:none;">
+<pre class="prettyprint">
+partial void btnStandard_Activated (UIBarButtonItem sender)
+{
+     map.MapType = MapKit.MKMapType.Standard;
+}
+</pre></div></p>
+
+        <li>
+          Run your application in the simulator or on a device and use the buttons to change the map type.
+        </li>
+      </ol>
+
+      <h2>Set mapping options</h2>
+      <ol>
+        <li>
+          Open the <b>Main.storyboard</b> designer and select the <code>MKMapView</code>. Under the <b>Allows</b> section in the property explorer, make sure all the the boxes are checked. Under the <b>Shows</b> section, make sure all the the boxes <em>except</em>User Location</li> are checked (we'll cover that one in the next lab).
+        </li>
+        <img src="./res/images/lab1-map-options.png" />
+        <li>
+          Run the app again and try <em>dragging</em> the map with your finger (or mouse on the simulator). Try rotating the map, and then use two fingers to pinch-zoom the scale of the map.
+          <ul class="indent-none">
+            <li>On the Simulator you can hold the OPTION key down to simulate two-fingers.</li>
+          </ul>
+        </li>
+        <li>
+          Stop the app and uncheck some of the options and try to interact with the map again to see the effect of each one.
+        </li>
+      </ol>
+
+      <h1>Summary</h1>
+      <p> 
+        Congratulations! In this lab exercise, you created a custom UI capable of changing the map view using the <code>MKMapView</code>.
+      </p>
+      
+      <div class="align-right"> <a href="../Start%20Here.html">Go Back</a> </div>
+    
+    </section>
+
+    <script src="./res/js/jquery.min.js"></script>
+    <script src="./res/js/prettify.js"></script>
+    <script src="./res/js/script.js"></script>
+
+    <footer>Copyright (C) 2018 Xamarin Inc., Microsoft.</footer>
+  </body>
+</html>

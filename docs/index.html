@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=US-ASCII">
+    <title>Introduction to Maps</title>
+    <link rel="stylesheet" type="text/css" href="./parts/res/styles/normalize.css">
+    <link rel="stylesheet" type="text/css" href="./parts/res/styles/prettify.css">
+    <link rel="stylesheet" type="text/css" href="./parts/res/styles/styles.css">
+</head>
+
+<body>
+    <!-- This will be filled in at runtime -->
+    <header role="course-title"></header>
+
+    <section id="main">
+ 
+      <h2>Before you begin</h2>
+      <p>
+        This is an iOS class. To complete the coding exercises, you will need an Apple development environment with either a simulator or iOS device to run the exercise on. Please see the <a href="https://university.xamarin.com/resources/setup-and-troubleshooting">setup page</a> if you need help installing the Xamarin development environment.
+      </p>
+
+      <h2>Overview</h2>
+      <p>
+        Maps in the palm of our hand has changed the way that we interact with the world. It's hard to imagine navigating without our smartphone these days. In this course, we will examine how to embed and use maps in our iOS applications. Along the way, we will look at how to show the device's current location on the map, change the camera's view, and add pin annotations.
+      </p>
+      
+      <h2>Objectives</h2>
+      <ol>
+        <li>Explore iOS mapping options</li>
+        <li>Use location data</li>
+        <li>Adjust the viewport of the map</li>
+        <li>Add annotations to the map</li>
+      </ol>
+      
+      <h2>Lecture</h2>
+      <p><a href="./parts/slides.pdf">IOS230 - Maps and Location</a>.</p>
+      
+      <h2>Exercises</h2>
+      <p>
+          Exercise materials are available from <a href="https://github.com/XamarinUniversity/IOS230/">GitHub</a>. The code can be cloned through a desktop Git client or <a href="https://github.com/XamarinUniversity/IOS230/archive/master.zip">downloaded directly</a> as a ZIP file.
+      </p>
+      <ol>
+        <li>
+          <div class="objective">Add a map and set the properties</div>
+          <a href="./parts/part1.html">Exercise</a> <br />
+          In this exercise, you will display a map using <code>MKMapView</code> in your application and show three different map types.
+        </li>
+        <li>
+          <div class="objective">Show the device's current location</div>
+          <a href="./parts/part2.html">Exercise</a> <br />
+          Next, you will request "in-use" location permissions from iOS and display the device's current location on your map.
+        </li>
+        <li>
+          <div class="objective">Changing the map's viewport with the camera</div>
+          <a href="./parts/part3.html">Exercise</a><br />
+          Here, you will work with <code>MKMapCamera</code> and change the camera's view for different areas on the map by tapping different buttons.
+        </li>
+        <li>
+          <div class="objective">Add an annotation to your map</div>
+          <a href="./parts/part4.html">Exercise</a> <br />
+          In this final exercise, you will  add annotations to a map to display where Xamarin office locations around the world are using <code>MKPointAnnotation.</code>
+        </li>
+      </ol>
+
+      <!-- This section is for additional links and examples that are relevant to 
+            the material in this course -->
+      <h2>Additional resources</h2>
+      
+      <div class="wslist"> 
+        <a href="http://developer.xamarin.com/guides/ios/platform_features/ios_maps/" target="_blank">Working
+          with MapKit in Xamarin.iOS</a> 
+        <a href="https://developer.apple.com/library/ios/documentation/MapKit/Reference/MapKit_Framework_Reference/" target="_blank">MapKit Framework Reference (Apple)</a> 
+        <a href="http://developer.xamarin.com/guides/ios/platform_features/ios_maps_walkthrough/" target="_blank">Walkthrough: Exploring annotations and overlays in MapKit</a> 
+        <a href="http://lifesforlearning.com/upgrading-mapkit-ios-7-ios-8/" target="_blank">Requesting location permissions in iOS8 and beyond (Blog)</a> 
+      </div>
+    </section>
+
+    <script src="./parts/res/js/jquery.min.js"></script>
+    <script src="./parts/res/js/prettify.js"></script>
+    <script src="./parts/res/js/script.js"></script>
+
+    <footer>Copyright (C) 2018 Xamarin Inc., Microsoft.<br><a target="_blank" href="http://university.xamarin.com">Visit Xamarin University for more classes and content</a></footer>
+  </body>
+</html>
